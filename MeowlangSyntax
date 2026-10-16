@@ -1,0 +1,76 @@
+Išvestis:
+scream „Hello“
+
+----------------------
+
+Sąlyga:
+IfPet hungry: 
+	scream "Feed me" 
+ElsePet sleepy: 
+ 	scream "Let me sleep" 
+ElseBite: 
+ 	scream "Play"
+----------------------
+Ciklas:
+Zoomies i in territory(5):
+    scream i
+
+Ciklas:
+Chasetail hunger > 0
+ 	scream „Still hungry“
+    Hunger = hunger – 1
+----------------------
+Boolean
+
+hungry = purr
+sleepy = hiss
+IfPet hungry:
+    scream "Feed me"
+Output: "Feed me"
+----------------------
+Sąrašas
+
+Cats = CuddlePile()
+Cats.Add(„Luna“)
+Cats.knockofftable(„Luna“)
+
+----------------------
+funkcija
+
+Cattrick add(a, b):
+	Cough a + b
+
+----------------------
+Klasė
+
+Breed Cat:
+    CatTrick __adopt__(ThisCat, name):
+    ThisCat.name = name
+
+----------------------
+Exception
+LandOnFeet: 
+    x = 10/0
+Fall:
+    scream "Hairball!"
+GroomAnyway:
+    scream "I don't care, I'm still cute"
+
+----------------------
+Savybė
+NineLives:
+     number = Paw(Listen("Number: "))
+     result = 100 / number
+     MEOW result
+  
+AllLivesLost:
+     MEOW "The cat failed"
+
+
+
+
+
+
+
+
+
