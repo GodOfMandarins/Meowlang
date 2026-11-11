@@ -1,26 +1,59 @@
 #print
+scream "------------"
+scream "PRINT"
 scream "Meow"
+scream "------------"
 
 #variable assignment
+scream "VARIABLE ASSIGNMENT"
 x = 10 + 5
+scream "x:" 
 scream x
+scream "------------"
+scream "THIS SHOULD BE NONE:"
+z = schrodinger
+scream z
+scream "------------"
 
 #booleans
+scream "BOOLEANS"
 is_happy = purr
 is_unhappy = hiss
 scream is_happy
 scream is_unhappy
+scream "------------"
 
-#if, else
-is_happy = hiss # true/false keisti cia
-ifpet is_happy {
-    scream "I'm gucci"
-} bite {
-    scream "I'm not gucci"
+#if, ifelse, else
+scream "IF, IFELSE AND ELSE"
+y = 7
+ifpet y == 13 {
+    scream "suveike if:"
+    scream "im good guys, i swear"
+}elsebite y/3+1 == 2 {
+    scream "suveike ifelse:"
+    scream "cia ifelse"
+}bite              {
+    scream "suveike else:"
+    scream "atsibodo. iseinu"
 }
+scream "------------"
+
+#char
+scream "Cia Char:"
+letter = flea("M") # jei > 1 char, meta atitinkama error
+scream letter
+scream "------------"
+
+#string
+scream "Cia string!!:"
+saying = meow("varom alaus?")
+scream saying
+scream "------------"
 
 #ciklas
+scream "FOR CYCLE"
 i = 0
 zoomies i in territory(3) {
     scream i
 }
+scream "------------"

@@ -30,11 +30,22 @@ class MeowLangInterpreter(Interpreter):
                 self.visit(statement)
 
     def if_stmt(self, tree):
-        condition = self.visit(tree.children[0]) #jei if praeina
-        then_body = tree.children[1].children    # sukuria body
-        else_body = tree.children[2].children if len(tree.children) > 2 else [] #sukurto body else'as
+        if self.visit(tree.children[0]):
+            self._execute_block(tree.children[1])
+            return
 
-        for statement in then_body if condition else else_body: #issirenka viena
+        index = 2
+        while index + 1 < len(tree.children):
+            if self.visit(tree.children[index]):
+                self._execute_block(tree.children[index + 1])
+                return
+            index += 2
+
+        if index < len(tree.children):
+            self._execute_block(tree.children[index])
+
+    def _execute_block(self, block):
+        for statement in block.children:
             self.visit(statement)
 
     def add(self, tree):
@@ -75,6 +86,18 @@ class MeowLangInterpreter(Interpreter):
                 raise TypeError("territory expects exactly one argument")
             return range(arguments[0])
 
+        if function_name == "flea":
+            if len(arguments) != 1 or not isinstance(arguments[0], str):
+                raise TypeError("flea expects exactly one string argument")
+            if len(arguments[0]) != 1:
+                raise ValueError("flea expects a single character")
+            return arguments[0]
+
+        if function_name == "meow":
+            if len(arguments) != 1 or not isinstance(arguments[0], str):
+                raise TypeError("meow expects exactly one string argument")
+            return arguments[0]
+
         raise NameError(f"Unknown function: '{function_name}'")
 
     def string(self, tree):
@@ -88,3 +111,24 @@ class MeowLangInterpreter(Interpreter):
 
     def false(self, _):
         return False
+
+    def null(self, _):
+        return None
+
+    def equal(self, tree):
+        return self.visit(tree.children[0]) == self.visit(tree.children[1])
+
+    def not_equal(self, tree):
+        return self.visit(tree.children[0]) != self.visit(tree.children[1])
+
+    def greater(self, tree):
+        return self.visit(tree.children[0]) > self.visit(tree.children[1])
+
+    def less(self, tree):
+        return self.visit(tree.children[0]) < self.visit(tree.children[1])
+
+    def greater_equal(self, tree):
+        return self.visit(tree.children[0]) >= self.visit(tree.children[1])
+
+    def less_equal(self, tree):
+        return self.visit(tree.children[0]) <= self.visit(tree.children[1])

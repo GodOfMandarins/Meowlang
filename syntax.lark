@@ -18,19 +18,32 @@ PRINT_KW.10: "Print" | "scream"
 for_stmt: "zoomies" CNAME "in" expr "{" statement* "}"
 
 //if
-if_stmt: "ifpet" expr block ["bite" block]
+if_stmt: "ifpet" expr block ("elsebite" expr block)* ["bite" block] //expr = condition. Cia nera expr nes else neturi condition
 block: "{" statement* "}"
 
-//matematika
-?expr: term
-    | expr "+" term -> add
-    | expr "-" term -> sub
+//if gramatika
+?expr: comparison
 
+?comparison: sum
+    | sum "==" sum -> equal
+    | sum "!=" sum -> not_equal
+    | sum "<" sum -> less
+    | sum ">" sum -> greater
+    | sum ">=" sum -> greater_equal
+    | sum "<=" sum -> less_equal
+
+?sum: term
+    | sum "+" term -> add
+    | sum "-" term -> sub
+
+//matematika
 ?term: factor
     | term "*" factor -> mul
     | term "/" factor -> div
 
+//variable
 ?factor: NUMBER -> number
+    | SCHRODINGER -> null
     | CNAME "(" [args] ")" -> call
     | CNAME -> var
     | ESCAPED_STRING -> string
@@ -42,6 +55,8 @@ args: expr ("," expr)*
 //bool
 bool_val: "purr" -> true
         | "hiss" -> false
+
+SCHRODINGER.10: "schrodinger"
 
 //terminals & whitespace
 %import common.CNAME
