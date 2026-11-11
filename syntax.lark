@@ -1,0 +1,52 @@
+//Startuoja programa
+start: statement*
+
+//funkcijos
+?statement: assign_stmt
+    | print_stmt
+    | for_stmt
+    | expr
+
+assign_stmt: CNAME "=" expr
+
+//print statement
+print_stmt: PRINT_KW expr
+PRINT_KW.10: "Print" | "scream"
+
+//for loop
+for_stmt: "zoomies" CNAME "in" expr "{" statement* "}"
+
+//matematika
+?expr: term
+    | expr "+" term -> add
+    | expr "-" term -> sub
+
+?term: factor
+    | term "*" factor -> mul
+    | term "/" factor -> div
+
+?factor: NUMBER -> number
+    | CNAME "(" [args] ")" -> call
+    | CNAME -> var
+    | ESCAPED_STRING -> string
+    | bool_val -> boolean
+    | "(" expr ")"
+
+args: expr ("," expr)*
+
+//bool
+bool_val: "purr" -> true
+        | "hiss" -> false
+
+//terminals & whitespace
+%import common.CNAME
+%import common.NUMBER
+%import common.ESCAPED_STRING
+%import common.WS //whitespace (spaces, tabs, \n etc)
+//# - komentaro pradzia
+//^ any character besides \n
+//* - any amount of characters
+COMMENT: /#[^\n]*/
+//ignore: kad ignoruotu juos in the final string passed for parsing
+%ignore WS
+%ignore COMMENT
