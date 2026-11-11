@@ -6,6 +6,8 @@ start: statement*
     | print_stmt
     | for_stmt
     | if_stmt
+    | function_def
+    | return_stmt
     | expr
 
 assign_stmt: CNAME "=" expr
@@ -20,6 +22,11 @@ for_stmt: "zoomies" CNAME "in" expr "{" statement* "}"
 //if
 if_stmt: "ifpet" expr block ("elsebite" expr block)* ["bite" block] //expr = condition. Cia nera expr nes else neturi condition
 block: "{" statement* "}"
+
+//functions
+function_def: "cattrick" CNAME "(" [parameters] ")" block
+parameters: CNAME ("," CNAME)*
+return_stmt: "cough" expr
 
 //if gramatika
 ?expr: comparison
@@ -44,6 +51,7 @@ block: "{" statement* "}"
 //variable
 ?factor: NUMBER -> number
     | SCHRODINGER -> null
+    | "[" [args] "]" -> list_literal
     | CNAME "(" [args] ")" -> call
     | CNAME -> var
     | ESCAPED_STRING -> string
