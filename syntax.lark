@@ -5,6 +5,7 @@ start: statement*
 ?statement: assign_stmt
     | print_stmt
     | for_stmt
+    | if_stmt
     | expr
 
 assign_stmt: CNAME "=" expr
@@ -15,6 +16,10 @@ PRINT_KW.10: "Print" | "scream"
 
 //for loop
 for_stmt: "zoomies" CNAME "in" expr "{" statement* "}"
+
+//if
+if_stmt: "ifpet" expr block ["bite" block]
+block: "{" statement* "}"
 
 //matematika
 ?expr: term
