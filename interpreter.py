@@ -29,6 +29,14 @@ class MeowLangInterpreter(Interpreter):
             for statement in body:
                 self.visit(statement)
 
+    def if_stmt(self, tree):
+        condition = self.visit(tree.children[0]) #jei if praeina
+        then_body = tree.children[1].children    # sukuria body
+        else_body = tree.children[2].children if len(tree.children) > 2 else [] #sukurto body else'as
+
+        for statement in then_body if condition else else_body: #issirenka viena
+            self.visit(statement)
+
     def add(self, tree):
         left, right = tree.children
         return self.visit(left) + self.visit(right)

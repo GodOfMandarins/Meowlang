@@ -11,8 +11,16 @@ is_unhappy = hiss
 scream is_happy
 scream is_unhappy
 
+#if, else
+is_happy = hiss # true/false keisti cia
+ifpet is_happy {
+    scream "I'm gucci"
+} bite {
+    scream "I'm not gucci"
+}
+
 #ciklas
 i = 0
 zoomies i in territory(3) {
     scream i
-} 
+}
