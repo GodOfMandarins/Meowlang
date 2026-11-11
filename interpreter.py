@@ -1,9 +1,15 @@
 from lark.visitors import Interpreter
 
 
+class ReturnSignal(Exception):
+    def __init__(self, value):
+        self.value = value
+
+
 class MeowLangInterpreter(Interpreter):
     def __init__(self):
         self.variables = {}
+        self.functions = {}
 
     def start(self, tree):
         return self.visit_children(tree)
@@ -48,6 +54,22 @@ class MeowLangInterpreter(Interpreter):
         for statement in block.children:
             self.visit(statement)
 
+    def function_def(self, tree):
+        name = str(tree.children[0])
+        if len(tree.children) == 3:
+            parameters = [str(parameter) for parameter in tree.children[1].children]
+            body = tree.children[2]
+        else:
+            parameters = []
+            body = tree.children[1]
+        self.functions[name] = (parameters, body)
+
+    def parameters(self, tree):
+        return list(tree.children)
+
+    def return_stmt(self, tree):
+        raise ReturnSignal(self.visit(tree.children[0]))
+
     def add(self, tree):
         left, right = tree.children
         return self.visit(left) + self.visit(right)
@@ -80,25 +102,49 @@ class MeowLangInterpreter(Interpreter):
     def call(self, tree):
         function_name = str(tree.children[0])
         arguments = self.visit(tree.children[1]) if len(tree.children) > 1 else []
-
+        #list
+        if function_name == "cuddlepile":
+            return arguments
+        #range
         if function_name == "territory":
             if len(arguments) != 1:
                 raise TypeError("territory expects exactly one argument")
             return range(arguments[0])
-
+        #char
         if function_name == "flea":
             if len(arguments) != 1 or not isinstance(arguments[0], str):
                 raise TypeError("flea expects exactly one string argument")
             if len(arguments[0]) != 1:
                 raise ValueError("flea expects a single character")
             return arguments[0]
-
+        #string
         if function_name == "meow":
             if len(arguments) != 1 or not isinstance(arguments[0], str):
                 raise TypeError("meow expects exactly one string argument")
             return arguments[0]
+        #funkcija
+        if function_name in self.functions: 
+            parameters, body = self.functions[function_name]
+            if len(arguments) != len(parameters):
+                raise TypeError(
+                    f"{function_name} expects {len(parameters)} arguments, "
+                    f"got {len(arguments)}"
+                )
+
+            previous_variables = self.variables
+            self.variables = dict(zip(parameters, arguments))
+            try:
+                self._execute_block(body)
+            except ReturnSignal as signal:
+                return signal.value
+            finally:
+                self.variables = previous_variables
+            return None
 
         raise NameError(f"Unknown function: '{function_name}'")
+
+    def list_literal(self, tree):
+        return self.visit(tree.children[0]) if tree.children else []
 
     def string(self, tree):
         return str(tree.children[0])[1:-1]

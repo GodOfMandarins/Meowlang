@@ -7,8 +7,16 @@ scream "------------"
 #variable assignment
 scream "VARIABLE ASSIGNMENT"
 x = 10 + 5
-scream "x:" 
+scream "x:"
 scream x
+
+scream ""
+
+scream "g:"
+g = "A"
+scream g
+
+#none (null)
 scream "------------"
 scream "THIS SHOULD BE NONE:"
 z = schrodinger
@@ -25,11 +33,11 @@ scream "------------"
 
 #if, ifelse, else
 scream "IF, IFELSE AND ELSE"
-y = 7
+y = 6
 ifpet y == 13 {
     scream "suveike if:"
     scream "im good guys, i swear"
-}elsebite y/3+1 == 2 {
+}elsebite y/3 == 2 {
     scream "suveike ifelse:"
     scream "cia ifelse"
 }bite              {
@@ -57,3 +65,46 @@ zoomies i in territory(3) {
     scream i
 }
 scream "------------"
+
+#list
+scream "Cia listai:"
+cats = ["Katinukas", "NeKatinukas", "Varle??", "ar veikia tarpai?", "koks cia limitas"] #direct list
+more_cats = cuddlepile("Bekojis", "Beuodegis") #constructor list
+number_list = cuddlepile(1,15,9.9999,10.15, "A", "C", "C")
+scream cats
+scream more_cats
+scream number_list
+scream "------------"
+
+#function, return
+scream "Cia add funkcija:"
+cattrick add(a, b) {
+    cough a + b
+}
+sum = add(2, 3)
+scream sum
+scream ""
+
+scream "Cia div funkcija:"
+cattrick div(c,d){
+    cough c/d
+}
+divide = div(7,3)
+scream divide
+
+cattrick mult(e,f,g){
+    one = e+f
+    two = f+g
+    three = g+e
+    ifpet three > one{
+        cough e
+    }elsebite three < two{
+        cough f
+    }bite{
+        cough g
+    }
+}
+multiple = mult(1,2,3)
+scream multiple
+scream "------------"
+
