@@ -1,0 +1,18 @@
+#print
+scream "Meow"
+
+#variable assignment
+x = 10 + 5
+scream x
+
+#booleans
+is_happy = purr
+is_unhappy = hiss
+scream is_happy
+scream is_unhappy
+
+#ciklas
+i = 0
+zoomies i in territory(3) {
+    scream i
+} 
