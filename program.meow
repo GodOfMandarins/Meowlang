@@ -54,7 +54,7 @@ scream "------------"
 
 #string
 scream "Cia string!!:"
-saying = meow("varom alaus?")
+saying = meow("varom valgyt?")
 scream saying
 scream "------------"
 
