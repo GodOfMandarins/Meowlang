@@ -48,7 +48,7 @@ class BasicTests(unittest.TestCase):
             "x = 10\nscream x - 4",
             "x = 10\nprint(x - 4)",
         )
-        
+
     def test_division_and_decimals(self):
         self.compare_programs(
             "scream 7 / 2\nscream 1.5 + 2.25",
@@ -134,3 +134,10 @@ class BasicTests(unittest.TestCase):
             'scream meow("Hello")\nscream flea("M")',
             'print("Hello")\nprint("M")',
         )
+
+    def test_ninelives_syntax(self):
+        tree = PARSER.parse(
+            'ninelives(3) { err("not ready") } '
+            'allliveslost(problem) { scream problem }'
+        )
+        self.assertEqual(tree.children[0].data, "nine_lives_stmt")

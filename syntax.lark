@@ -9,12 +9,22 @@ start: statement*
     | function_def
     | return_stmt
     | expr
+    | nine_lives_stmt
+    | while_stmt
+    | break_stmt
+    | continue_stmt
+    | pick_toy_stmt
+    | landonfeet_stmt
 
 assign_stmt: CNAME "=" expr
 
 //print statement
 print_stmt: PRINT_KW expr
 PRINT_KW.10: "Print" | "scream"
+
+//9 lives 
+nine_lives_stmt: "ninelives" "(" LIVES ")" block "allliveslost" "(" CNAME ")" block
+LIVES: /[1-9]/
 
 //for loop
 for_stmt: "zoomies" CNAME "in" expr "{" statement* "}"
@@ -28,8 +38,29 @@ function_def: "cattrick" CNAME "(" [parameters] ")" block
 parameters: CNAME ("," CNAME)*
 return_stmt: "cough" expr
 
+//while 
+while_stmt: "chase_tail" expr block
+break_stmt: "nap"
+continue_stmt: "keepzooming"
+
+//toy 
+pick_toy_stmt: "pickToy" expr "{" toy_case+ ["bite" block] "}"
+toy_case: "toy" expr block
+
+//landonfeet 
+landonfeet_stmt: "landonfeet" expr "as" CNAME block "fall" "(" CNAME ")" block
+
 //if gramatika
-?expr: comparison
+?expr: or_expr
+
+?or_expr: and_expr
+        | or_expr "||" and_expr -> logical_or
+
+?and_expr: not_expr
+        | and_expr "&&" not_expr -> logical_and
+
+?not_expr: "!" not_expr -> logical_not
+        | comparison
 
 ?comparison: sum
     | sum "==" sum -> equal
@@ -52,11 +83,14 @@ return_stmt: "cough" expr
 ?factor: NUMBER -> number
     | SCHRODINGER -> null
     | "[" [args] "]" -> list_literal
+    | CNAME "." CNAME "(" [args] ")" -> method_call
     | CNAME "(" [args] ")" -> call
     | CNAME -> var
     | ESCAPED_STRING -> string
     | bool_val -> boolean
     | "(" expr ")"
+    | "ok" "(" expr ")" -> ok_result
+    | "err" "(" expr ")" -> err_result
 
 args: expr ("," expr)*
 
