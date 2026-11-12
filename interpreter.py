@@ -56,12 +56,12 @@ class MeowLangInterpreter(Interpreter):
 
     def function_def(self, tree):
         name = str(tree.children[0])
-        if len(tree.children) == 3:
+        body = tree.children[-1]
+
+        parameters = []
+        if len(tree.children) > 2 and tree.children[1] is not None:
             parameters = [str(parameter) for parameter in tree.children[1].children]
-            body = tree.children[2]
-        else:
-            parameters = []
-            body = tree.children[1]
+
         self.functions[name] = (parameters, body)
 
     def parameters(self, tree):
@@ -101,7 +101,8 @@ class MeowLangInterpreter(Interpreter):
 
     def call(self, tree):
         function_name = str(tree.children[0])
-        arguments = self.visit(tree.children[1]) if len(tree.children) > 1 else []
+        argument_tree = tree.children[1] if len(tree.children) > 1 else None
+        arguments = self.visit(argument_tree) if argument_tree is not None else []
         #list
         if function_name == "cuddlepile":
             return arguments
@@ -144,7 +145,9 @@ class MeowLangInterpreter(Interpreter):
         raise NameError(f"Unknown function: '{function_name}'")
 
     def list_literal(self, tree):
-        return self.visit(tree.children[0]) if tree.children else []
+        if not tree.children or tree.children[0] is None:
+            return []
+        return self.visit(tree.children[0])
 
     def string(self, tree):
         return str(tree.children[0])[1:-1]
